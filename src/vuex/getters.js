@@ -1,0 +1,1 @@
+export const sideBarList = state => state.sideBarList;  //左边固定栏
