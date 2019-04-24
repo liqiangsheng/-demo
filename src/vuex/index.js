@@ -7,24 +7,11 @@ Vue.use(Vuex);
 // 首先声明一个需要全局维护的状态 state,
 const state = {
     sideBarList: [//左边固定栏
-        {
-            icon: 'el-icon-lx-home',
-            index: 'dashboard',
-            title: '首页' ,
-            Jurisdiction:true //权限 true就显示，false就不显示
-        },
-        {
-            icon: 'el-icon-lx-home',
-            index: '404',
-            title: '404' ,
-            Jurisdiction:true //权限 true就显示，false就不显示
-        },
-
 //                    {
 //                        icon: 'el-icon-lx-calendar',
 //                        index: '3',
 //                        title: '表单相关',
-//                        subs: [
+//                        children: [
 //                            {
 //                                index: 'form',
 //                                title: '基本表单'
@@ -32,7 +19,7 @@ const state = {
 //                            {
 //                                index: '3-2',
 //                                title: '三级菜单',
-//                                subs: [
+//                                children: [
 //                                    {
 //                                        index: 'editor',
 //                                        title: '富文本编辑器'

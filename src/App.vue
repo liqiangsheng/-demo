@@ -14,3 +14,19 @@
         margin: 0 auto;
     }
 </style>
+<script>
+    export default {
+        mounted () {
+//            window.addEventListener( 'beforeunload', e => this.set() );
+        },
+        methods:{
+            set(){
+                localStorage.removeItem('token');
+                localStorage.removeItem('sideBarList');
+            }
+        },
+        destroyed(){
+           this.set();
+        }
+    }
+</script>

@@ -14,21 +14,22 @@
                     </el-input>
                 </el-form-item>
                 <div class="login-btn">
-                    <el-button type="primary" @click="submitForm('ruleForm')" >登录</el-button>
+                    <el-button type="primary" @click="submitForm()" >登录</el-button>
                 </div>
-                <p class="login-tips">Tips : 用户名和密码随便填。</p>
             </el-form>
         </div>
     </div>
 </template>
 
 <script>
+    import {jurisdiction} from '../common/js/permission_settings'
+    import {login} from '../../assets/api/login'
     export default {
         data: function(){
             return {
                 ruleForm: {
                     username: 'admin',
-                    password: '123123'
+                    password: 'admin'
                 },
                 rules: {
                     username: [
@@ -41,46 +42,40 @@
             }
         },
         created(){
+
+
             let _this = this;
             document.onkeydown = function(event) {
                 var key = window.event.keyCode;
                 if (key == 13) {
-                    _this.submitForm('ruleForm')
+                    _this.submitForm()
                 }
             }
         },
         methods: {
-            submitForm(formName) { //登陆的方法 做正则，存token
-                this.$refs[formName].validate((valid) => { //
-                    if (valid) {
-                        localStorage.setItem('ms_username',this.ruleForm.username);
+            submitForm() { //登陆的方法 做正则，存token
+                login(this.ruleForm.username,this.ruleForm.password).then(res=>{
+                    if(res.data.status === 200){
+                        localStorage.setItem('token',JSON.stringify(res.data.data.token));
+                        localStorage.setItem('userName',JSON.stringify(res.data.data.name));
+                         let sideBarList=jurisdiction(2);
+                        this.$store.dispatch('sideBarList',sideBarList);
+                        localStorage.setItem('sideBarList',JSON.stringify(sideBarList));
                         this.$router.push('/');
-                        let sideBarList=[//左边固定栏 做权限改vueX里面的数据，或者后台还回的路径，
-                            {
-                                icon: 'el-icon-lx-home',
-                                index: 'dashboard',
-                                title: '首页' ,
-                                Jurisdiction:true //权限 true就显示，false就不显示
-                            },
-                            {
-                                icon: 'el-icon-lx-home',
-                                index: '404',
-                                title: '404' ,
-                                Jurisdiction:false //权限 true就显示，false就不显示
-                            },
-                            {
-                                icon: 'el-icon-lx-home',
-                                index: '403',
-                                title: '403' ,
-                                Jurisdiction:true //权限 true就显示，false就不显示
-                            },
-                        ]
-                        this.$store.dispatch('sideBarList',sideBarList)
-                    } else {
-                        console.log('error submit!!');
-                        return false;
                     }
-                });
+                })
+//                this.$refs[formName].validate((valid) => { //
+//                    if (valid) {
+//                        localStorage.setItem('token',this.ruleForm.username);
+//                        this.$router.push('/');
+//                        let sideBarList=jurisdiction(2);
+//                        this.$store.dispatch('sideBarList',sideBarList);
+//                        localStorage.setItem('sideBarList',JSON.stringify(sideBarList));
+//                    } else {
+//                        console.log('error submit!!');
+//                        return false;
+//                    }
+//                });
             }
         }
     }

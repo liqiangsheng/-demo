@@ -3,15 +3,15 @@
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="collapse" background-color="#324157"
             text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="item in items" v-if="!!item.Jurisdiction">
-                <template v-if="item.subs">
+                <template v-if="item.children">
                     <el-submenu :index="item.index" :key="item.index">
                         <template slot="title">
                             <i :class="item.icon"></i><span slot="title">{{ item.title }}</span>
                         </template>
-                        <template v-for="subItem in item.subs">
-                            <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+                        <template v-for="subItem in item.children">
+                            <el-submenu v-if="subItem.children" :index="subItem.index" :key="subItem.index">
                                 <template slot="title">{{ subItem.title }}</template>
-                                <el-menu-item v-for="(threeItem,i) in subItem.subs" :key="i" :index="threeItem.index">
+                                <el-menu-item v-for="(threeItem,i) in subItem.children" :key="i" :index="threeItem.index">
                                     {{ threeItem.title }}
                                 </el-menu-item>
                             </el-submenu>
@@ -37,7 +37,7 @@
         data() {
             return {
                 collapse: false,
-                items:this.$store.getters.sideBarList, //从vueX中取左边的列表
+                items:this.$store.getters.sideBarList.length>0?this.$store.getters.sideBarList:JSON.parse(localStorage.getItem('sideBarList')), //从vueX中取左边的列表
             }
         },
         computed:{
@@ -46,6 +46,8 @@
             }
         },
         created(){
+            console.log(JSON.parse(localStorage.getItem('sideBarList')))
+            console.log(this.$store.getters.sideBarList)
             // 通过 Event Bus 进行组件间通信，来折叠侧边栏
             bus.$on('collapse', msg => {
                 this.collapse = msg;

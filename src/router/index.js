@@ -12,24 +12,25 @@ export default new Router({
         {
             path: '/',
             component: resolve => require(['../components/common/Home.vue'], resolve),
-            meta: { title: '自述文件' },
+            meta: { title: '首页' },
             children:[
                 {
                     path: '/dashboard',
                     component: resolve => require(['../components/page/home/Dashboard.vue'], resolve),
                     meta: { title: '首页' }
-                },
-                {
-                    path: '/404',
-                    component: resolve => require(['../components/page/error/404.vue'], resolve),
-                    meta: { title: '404' }
-                },
-                {
-                    path: '/403',
-                    component: resolve => require(['../components/page/error/403.vue'], resolve),
-                    meta: { title: '403' }
                 }
+
             ]
+        },
+        {
+            path: '/404',
+            component: resolve => require(['../components/page/error/404.vue'], resolve),
+            meta: { title: '404' }
+        },
+        {
+            path: '/403',
+            component: resolve => require(['../components/page/error/403.vue'], resolve),
+            meta: { title: '403' }
         },
         {
             path: '/login',
